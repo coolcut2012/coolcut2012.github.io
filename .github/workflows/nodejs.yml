@@ -1,0 +1,24 @@
+name: CI Blog
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+     - name: git(blog) checkout...
+       uses: actions/checkout@v1
+     - name: 2. setup nodejs...
+       uses: actions/setup-node@v1
+     - name: 3. install hexo-cli...
+       run: npm i hexo-cli -g && npm i
+     - name: 4. hexo generate public files...
+       run: hexo clean && hexo g
+     - name: 5. hexo deploy 'public files' to 'sonake.github.io' repo...
+       run: |
+        git config --global user.name "coolcut2012"
+        git config --global user.email "4606521456@qq.com"
+        hexo d
